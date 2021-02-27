@@ -1,20 +1,25 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { Animated, View, StyleSheet } from 'react-native';
 import { Icon, Text } from '@ui-kitten/components';
 
 import STYLES from '../style-constants';
 
-export function MovieMetaBar() {
+interface IProps {
+  voteAverage: number;
+  voteCount: number;
+}
+
+export function MovieMetaBar(props: IProps) {
   return (
     <>
-      <View style={styles.bar}>
+      <Animated.View style={styles.bar}>
         <View style={styles.bar_child}>
           <Icon name="star" style={STYLES.icon} fill="gold" />
           <Text style={styles.text}>
-            <Text style={{ fontWeight: 'bold' }}>8.2</Text>
+            <Text style={{ fontWeight: 'bold' }}>{props.voteAverage}</Text>
             /10
           </Text>
-          <Text style={styles.small_text}>123,232</Text>
+          <Text style={styles.small_text}>{props.voteCount}</Text>
         </View>
 
         <View style={styles.bar_child}>
@@ -23,19 +28,31 @@ export function MovieMetaBar() {
         </View>
 
         <View style={styles.bar_child}>
-          <GreenTextBG text="86" />
+          <GreenTextBG rating={props.voteAverage && props.voteAverage * 10} />
           <Text style={styles.text}>Metascore</Text>
-          <Text style={styles.small_text}>123,232</Text>
         </View>
-      </View>
+      </Animated.View>
     </>
   );
 }
 
-function GreenTextBG(props: { text: string }) {
+function GreenTextBG(props: { rating: number }) {
+  console.log(props.rating)
   return (
-    <View style={styles.green_text_bg}>
-      <Text style={styles.green_text_fg}>{props.text}</Text>
+    <View
+      style={[
+        styles.green_text_bg,
+        {
+          backgroundColor:
+            props.rating > 65
+              ? '#51CF66'
+              : props.rating < 35
+              ? '#CF5151'
+              : '#CCCF51',
+        },
+      ]}
+    >
+      <Text style={styles.green_text_fg}>{props.rating}</Text>
     </View>
   );
 }

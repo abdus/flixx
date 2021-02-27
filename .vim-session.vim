@@ -7,11 +7,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +89 screens/Movie.screen.tsx
-badd +51 components/movie-meta-bar.component.tsx
+badd +92 screens/Movie.screen.tsx
+badd +1 components/movie-meta-bar.component.tsx
 argglobal
 %argdel
-edit screens/Movie.screen.tsx
+edit components/movie-meta-bar.component.tsx
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
@@ -22,8 +22,8 @@ set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 106 + 106) / 212)
-exe 'vert 2resize ' . ((&columns * 105 + 106) / 212)
+exe 'vert 1resize ' . ((&columns * 105 + 106) / 212)
+exe 'vert 2resize ' . ((&columns * 106 + 106) / 212)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -34,15 +34,15 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 43 - ((11 * winheight(0) + 22) / 44)
+let s:l = 32 - ((27 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-43
-normal! 041|
+32
+normal! 032|
 wincmd w
 argglobal
-if bufexists("components/movie-meta-bar.component.tsx") | buffer components/movie-meta-bar.component.tsx | else | edit components/movie-meta-bar.component.tsx | endif
+if bufexists("screens/Movie.screen.tsx") | buffer screens/Movie.screen.tsx | else | edit screens/Movie.screen.tsx | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -52,15 +52,16 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 51 - ((27 * winheight(0) + 22) / 44)
+let s:l = 26 - ((25 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-51
-normal! 017|
+26
+normal! 054|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 106 + 106) / 212)
-exe 'vert 2resize ' . ((&columns * 105 + 106) / 212)
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 105 + 106) / 212)
+exe 'vert 2resize ' . ((&columns * 106 + 106) / 212)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
