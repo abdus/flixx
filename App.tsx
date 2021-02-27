@@ -1,5 +1,6 @@
 import React from 'react';
 import 'react-native-gesture-handler';
+import { StatusBar } from 'react-native';
 import * as eva from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
@@ -19,11 +20,9 @@ const App = () => {
     <>
       <ApplicationProvider {...eva} theme={eva.light}>
         <IconRegistry icons={EvaIconsPack} />
+        <StatusBar animated={true} hidden={true} />
         <NavigationContainer>
-          <Drawer.Navigator
-            initialRouteName="Home"
-            drawerContent={() => <SideMenu />}
-          >
+          <Drawer.Navigator initialRouteName="Movie">
             <Drawer.Screen name="Home" children={() => <HomeScreen />} />
             <Drawer.Screen name="Movie" children={() => <MovieScreen />} />
           </Drawer.Navigator>

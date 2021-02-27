@@ -7,11 +7,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +42 components/list-item.component.tsx
-badd +1 components/movie-slider.component.tsx
+badd +89 screens/Movie.screen.tsx
+badd +51 components/movie-meta-bar.component.tsx
 argglobal
 %argdel
-edit components/list-item.component.tsx
+edit screens/Movie.screen.tsx
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
@@ -34,15 +34,15 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 109 - ((43 * winheight(0) + 22) / 44)
+let s:l = 43 - ((11 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-109
-normal! 0
+43
+normal! 041|
 wincmd w
 argglobal
-if bufexists("components/movie-slider.component.tsx") | buffer components/movie-slider.component.tsx | else | edit components/movie-slider.component.tsx | endif
+if bufexists("components/movie-meta-bar.component.tsx") | buffer components/movie-meta-bar.component.tsx | else | edit components/movie-meta-bar.component.tsx | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -52,12 +52,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 3 - ((2 * winheight(0) + 22) / 44)
+let s:l = 51 - ((27 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-3
-normal! 010|
+51
+normal! 017|
 wincmd w
 exe 'vert 1resize ' . ((&columns * 106 + 106) / 212)
 exe 'vert 2resize ' . ((&columns * 105 + 106) / 212)
@@ -66,7 +66,7 @@ if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
 unlet! s:wipebuf
-set winheight=1 winwidth=20 winminheight=1 winminwidth=1 shortmess=filnxtToOFA
+set winheight=1 winwidth=1 winminheight=0 winminwidth=0 shortmess=aoO
 let s:sx = expand("<sfile>:p:r")."x.vim"
 if file_readable(s:sx)
   exe "source " . fnameescape(s:sx)
