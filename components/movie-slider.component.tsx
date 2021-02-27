@@ -60,7 +60,7 @@ export function MovieSlider() {
     ({ viewableItems }: { viewableItems: any }) => {
       const vi = viewableItems;
       if (vi && Array.isArray(vi) && vi.length > 0) {
-        setCurrentlyViewable(viewableItems[viewableItems.length - 1].index);
+        setCurrentlyViewable(viewableItems[0].index);
       }
     }
   );

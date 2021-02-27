@@ -7,8 +7,8 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +54 components/list-item.component.tsx
-badd +0 components/movie-slider.component.tsx
+badd +42 components/list-item.component.tsx
+badd +1 components/movie-slider.component.tsx
 argglobal
 %argdel
 edit components/list-item.component.tsx
@@ -34,11 +34,11 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 63 - ((13 * winheight(0) + 22) / 44)
+let s:l = 109 - ((43 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-63
+109
 normal! 0
 wincmd w
 argglobal
@@ -52,12 +52,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 87 - ((43 * winheight(0) + 22) / 44)
+let s:l = 3 - ((2 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-87
-normal! 0
+3
+normal! 010|
 wincmd w
 exe 'vert 1resize ' . ((&columns * 106 + 106) / 212)
 exe 'vert 2resize ' . ((&columns * 105 + 106) / 212)

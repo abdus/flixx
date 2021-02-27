@@ -12,36 +12,21 @@ export interface IListItem {
   flatListRef: any;
 }
 
+const startAnimCallback = (value: Animated.Value, toValue: number) => {
+  return Animated.timing(value, {
+    toValue,
+    useNativeDriver: true,
+    easing: Easing.linear,
+    duration: 300,
+  });
+};
+
 export function ListItem(props: IListItem) {
-  const ANIMATION_DURATION = 300;
   const ScaleAnime = React.useRef(new Animated.Value(1)).current;
   const RotateAnime = React.useRef(new Animated.Value(0)).current;
   const FadeAnime = React.useRef(new Animated.Value(0.3)).current;
 
-  function calculateRotate(currentIndex: number, itemIndex: number): number {
-    let returnable = 0;
-    if (currentIndex === itemIndex) {
-      returnable = 0;
-    } else if (currentIndex > itemIndex) {
-      returnable = -1;
-    } else if (currentIndex < itemIndex) {
-      returnable = 1;
-    }
-
-    return returnable;
-  }
-
-  const startAnimation = React.useCallback(
-    (value: Animated.Value, toValue: number) => {
-      return Animated.timing(value, {
-        toValue,
-        useNativeDriver: true,
-        easing: Easing.linear,
-        duration: ANIMATION_DURATION,
-      });
-    },
-    []
-  );
+  const startAnimation = React.useCallback(startAnimCallback, []);
 
   React.useEffect(() => {
     const scaleAnimToValue = props.currentlyViewable !== props.index ? 0.9 : 1;
@@ -116,6 +101,19 @@ export function ListItem(props: IListItem) {
       </View>
     </Animated.View>
   );
+}
+
+function calculateRotate(currentIndex: number, itemIndex: number): number {
+  let returnable = 0;
+  if (currentIndex === itemIndex) {
+    returnable = 0;
+  } else if (currentIndex > itemIndex) {
+    returnable = -1;
+  } else if (currentIndex < itemIndex) {
+    returnable = 1;
+  }
+
+  return returnable;
 }
 
 const styles = StyleSheet.create({
