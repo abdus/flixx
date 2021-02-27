@@ -31,39 +31,43 @@ export function ListItem(props: IListItem) {
     return returnable;
   }
 
-  React.useEffect(() => {
-    Animated.timing(ScaleAnime, {
-      toValue: props.currentlyViewable !== props.index ? 0.9 : 1,
-      useNativeDriver: true,
-      easing: Easing.linear,
-      duration: ANIMATION_DURATION,
-    }).start();
-  }, [props.currentlyViewable, ScaleAnime, props.index]);
+  const startAnimation = React.useCallback(
+    (value: Animated.Value, toValue: number) => {
+      return Animated.timing(value, {
+        toValue,
+        useNativeDriver: true,
+        easing: Easing.linear,
+        duration: ANIMATION_DURATION,
+      });
+    },
+    []
+  );
 
   React.useEffect(() => {
-    Animated.timing(RotateAnime, {
-      toValue: calculateRotate(props.currentlyViewable, props.index),
-      useNativeDriver: true,
-      easing: Easing.linear,
-      duration: ANIMATION_DURATION,
-    }).start();
-  }, [RotateAnime, props.currentlyViewable, ScaleAnime, props.index]);
+    const scaleAnimToValue = props.currentlyViewable !== props.index ? 0.9 : 1;
+    startAnimation(ScaleAnime, scaleAnimToValue).start();
+  }, [props.currentlyViewable, ScaleAnime, props.index, startAnimation]);
 
   React.useEffect(() => {
-    Animated.timing(FadeAnime, {
-      toValue: props.currentlyViewable !== props.index ? 0.3 : 1,
-      useNativeDriver: true,
-      easing: Easing.linear,
-      duration: ANIMATION_DURATION,
-    }).start();
-  }, [FadeAnime, props.currentlyViewable, ScaleAnime, props.index]);
+    startAnimation(
+      RotateAnime,
+      calculateRotate(props.currentlyViewable, props.index)
+    ).start();
+  }, [RotateAnime, props.currentlyViewable, props.index, startAnimation]);
+
+  React.useEffect(() => {
+    startAnimation(
+      FadeAnime,
+      props.currentlyViewable !== props.index ? 0.3 : 1
+    ).start();
+  }, [FadeAnime, props.currentlyViewable, props.index, startAnimation]);
 
   React.useEffect(() => {
     if (props.index === props.currentlyViewable) {
       props.flatListRef?.scrollToIndex({
         index: props.currentlyViewable,
         animated: true,
-        viewPosition: 0.5
+        viewPosition: 0.5,
       });
     }
   }, [props.currentlyViewable, props.flatListRef, props.index]);
