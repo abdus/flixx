@@ -49,11 +49,11 @@ export function ListItem(props: IListItem) {
 
   React.useEffect(() => {
     if (props.index === props.currentlyViewable) {
-      props.flatListRef?.scrollToIndex({
-        index: props.currentlyViewable,
-        animated: true,
-        viewPosition: 0.5,
-      });
+      //props.flatListRef?.scrollToIndex({
+      //index: props.currentlyViewable,
+      //animated: true,
+      //viewPosition: 0.5,
+      //});
     }
   }, [props.currentlyViewable, props.flatListRef, props.index]);
 

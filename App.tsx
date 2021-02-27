@@ -22,7 +22,7 @@ const App = () => {
         <IconRegistry icons={EvaIconsPack} />
         <StatusBar animated={true} hidden={true} />
         <NavigationContainer>
-          <Drawer.Navigator initialRouteName="Movie">
+          <Drawer.Navigator initialRouteName="Home">
             <Drawer.Screen name="Home" children={() => <HomeScreen />} />
             <Drawer.Screen name="Movie" children={() => <MovieScreen />} />
           </Drawer.Navigator>

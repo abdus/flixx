@@ -3,10 +3,6 @@ import { StyleSheet, Animated } from 'react-native';
 import { Layout, Icon } from '@ui-kitten/components';
 
 import STYLE from '../style-constants';
-import { MovieCategories } from './movie-categories.component';
-import { MovieSlider } from './movie-slider.component';
-
-const categories = ['Action', 'Crime', 'Comedy', 'Thriller', 'Horror'];
 
 export default function Header() {
   return (
@@ -15,8 +11,6 @@ export default function Header() {
         <Hamburger />
         <Icon style={STYLE.icon} fill={STYLE.iconFill} name="search-outline" />
       </Layout>
-      <MovieCategories categories={categories} />
-      <MovieSlider />
     </>
   );
 }

@@ -1,14 +1,14 @@
 import React from 'react';
 import { Animated, StyleSheet, View, Easing, Dimensions } from 'react-native';
-import { Layout, Text, Spinner } from '@ui-kitten/components';
+import { Layout, Text } from '@ui-kitten/components';
 
 import STYLE from '../style-constants';
 import { MovieMetaBar } from '../components/movie-meta-bar.component';
 import { CastCard } from '../components/cast-card.component';
+import { Spinner } from '../components/spinner.component';
+import { NetworkRequest } from '../network-requests';
 
-const genreArr = ['Crime', 'Drama'];
-
-export default function MovieScreen() {
+export default function MovieScreen({ route }: any) {
   const FadeAnime = React.useRef(new Animated.Value(0)).current;
   const [movie, setMovie] = React.useState<any>(null);
 
@@ -22,26 +22,23 @@ export default function MovieScreen() {
   }, [FadeAnime]);
 
   React.useEffect(() => {
-    fetch(
-      'https://api.themoviedb.org/3/movie/550?api_key='
-    )
-      .then((data) => data.json())
-      .then(setMovie)
-      .catch(console.error);
-  }, []);
+    const immediate = setImmediate(async () => {
+      const api = new NetworkRequest();
+      const { data, error } = await api.getAmovie(550);
+
+      data && setMovie(data);
+      error;
+    });
+
+    return () => clearImmediate(immediate);
+  }, [route]);
 
   if (!movie) {
     return (
-      <Layout
-        style={{
-          minHeight: Dimensions.get('window').height,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Spinner size="giant" status="basic" />
-      </Layout>
+      <>
+        <Spinner />
+        <Text>Name</Text>
+      </>
     );
   }
 
@@ -59,7 +56,7 @@ export default function MovieScreen() {
           voteCount={movie?.vote_count}
         />
         <Animated.View style={[styles.section, { marginTop: 20 }]}>
-          <Text category="h4">{movie?.title}</Text>
+          <Text category="h4">{movie?.title || <Spinner height={20} />}</Text>
 
           <View
             style={{
@@ -89,7 +86,7 @@ export default function MovieScreen() {
             <Text style={{ color: '#9A9BB2', fontSize: 14 }}>2h 13min</Text>
           </View>
 
-          {movie.genres.length > 0 && (
+          {movie?.genres?.length > 0 && (
             <Animated.ScrollView
               horizontal
               style={{ marginTop: 20, opacity: FadeAnime }}

@@ -3,16 +3,39 @@ import { StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Text } from '@ui-kitten/components';
 
 import STYLE from '../style-constants';
+import { NetworkRequest } from '../network-requests';
+import { Spinner } from '../components/spinner.component';
 
-interface IMovieCategories {
-  categories: string[];
-}
+interface IMovieCategories {}
 
-export function MovieCategories(props: IMovieCategories) {
+export function MovieCategories(_props: IMovieCategories) {
+  const [categories, setCategories] = React.useState<
+    { id: number; name: string }[]
+  >();
+
+  React.useEffect(() => {
+    const immediate = setImmediate(async () => {
+      const api = new NetworkRequest();
+      const { data } = await api.movieCategoris();
+      const data__any = data as any;
+
+      data &&
+        setCategories(
+          (data__any.genres as unknown) as { id: number; name: string }[]
+        );
+    });
+
+    return () => clearImmediate(immediate);
+  }, []);
+
+  if (!categories) {
+    return <Spinner height={100} status="basic" />;
+  }
+
   return (
     <ScrollView horizontal style={styles.wrapper}>
-      {Array.isArray(props.categories) &&
-        props.categories.map((cat, i) => <Category name={cat} key={i} />)}
+      {Array.isArray(categories) &&
+        categories.map((cat) => <Category name={cat.name} key={cat.id} />)}
     </ScrollView>
   );
 }

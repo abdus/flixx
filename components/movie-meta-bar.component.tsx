@@ -3,6 +3,7 @@ import { Animated, View, StyleSheet } from 'react-native';
 import { Icon, Text } from '@ui-kitten/components';
 
 import STYLES from '../style-constants';
+import { Spinner } from './spinner.component';
 
 interface IProps {
   voteAverage: number;
@@ -10,6 +11,14 @@ interface IProps {
 }
 
 export function MovieMetaBar(props: IProps) {
+  if (!props.voteAverage || !props.voteCount) {
+    return (
+      <View style={styles.bar}>
+        <Spinner height={30} />
+      </View>
+    );
+  }
+
   return (
     <>
       <Animated.View style={styles.bar}>
@@ -37,7 +46,7 @@ export function MovieMetaBar(props: IProps) {
 }
 
 function GreenTextBG(props: { rating: number }) {
-  console.log(props.rating)
+  console.log(props.rating);
   return (
     <View
       style={[
