@@ -36,7 +36,11 @@ export function MovieCategories(props: IMovieCategories) {
   }
 
   return (
-    <ScrollView horizontal style={styles.wrapper}>
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      style={styles.wrapper}
+    >
       {Array.isArray(categories) &&
         categories.map((genre) => (
           <Category

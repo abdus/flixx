@@ -7,13 +7,11 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +19 network-requests.ts
-badd +3 screens/Home.screen.tsx
-badd +146 screens/Movie.screen.tsx
-badd +13 components/cast-card.component.tsx
+badd +52 screens/Home.screen.tsx
+badd +0 components/movie-categories.component.tsx
 argglobal
 %argdel
-edit screens/Movie.screen.tsx
+edit screens/Home.screen.tsx
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
@@ -36,15 +34,15 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 146 - ((28 * winheight(0) + 22) / 44)
+let s:l = 52 - ((43 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-146
-normal! 09|
+52
+normal! 08|
 wincmd w
 argglobal
-if bufexists("components/cast-card.component.tsx") | buffer components/cast-card.component.tsx | else | edit components/cast-card.component.tsx | endif
+if bufexists("components/movie-categories.component.tsx") | buffer components/movie-categories.component.tsx | else | edit components/movie-categories.component.tsx | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -54,39 +52,17 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 13 - ((12 * winheight(0) + 22) / 44)
+let s:l = 39 - ((26 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-13
-normal! 054|
+39
+normal! 015|
 wincmd w
+2wincmd w
 exe 'vert 1resize ' . ((&columns * 106 + 106) / 212)
 exe 'vert 2resize ' . ((&columns * 105 + 106) / 212)
-tabedit network-requests.ts
-set splitbelow splitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 89 - ((26 * winheight(0) + 22) / 44)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-89
-normal! 0
-tabnext 2
+tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
