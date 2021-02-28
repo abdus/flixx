@@ -23,8 +23,11 @@ const App = () => {
         <StatusBar animated={true} hidden={true} />
         <NavigationContainer>
           <Drawer.Navigator initialRouteName="Home">
-            <Drawer.Screen name="Home" children={() => <HomeScreen />} />
-            <Drawer.Screen name="Movie" children={() => <MovieScreen />} />
+            <Drawer.Screen name="Home" children={(_props) => <HomeScreen />} />
+            <Drawer.Screen
+              name="Movie"
+              children={(props) => <MovieScreen {...props} />}
+            />
           </Drawer.Navigator>
         </NavigationContainer>
       </ApplicationProvider>

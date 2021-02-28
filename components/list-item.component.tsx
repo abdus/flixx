@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Image, View, Animated, Easing } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { Text, Icon } from '@ui-kitten/components';
+import { useNavigation } from '@react-navigation/native';
 
 import STYLE from '../style-constants';
 
@@ -9,7 +11,7 @@ export interface IListItem {
   name: string;
   currentlyViewable: number;
   index: number;
-  flatListRef: any;
+  movieId: number;
 }
 
 const startAnimCallback = (value: Animated.Value, toValue: number) => {
@@ -22,6 +24,7 @@ const startAnimCallback = (value: Animated.Value, toValue: number) => {
 };
 
 export function ListItem(props: IListItem) {
+  const navigation = useNavigation();
   const ScaleAnime = React.useRef(new Animated.Value(1)).current;
   const RotateAnime = React.useRef(new Animated.Value(0)).current;
   const FadeAnime = React.useRef(new Animated.Value(0.3)).current;
@@ -47,15 +50,6 @@ export function ListItem(props: IListItem) {
     ).start();
   }, [FadeAnime, props.currentlyViewable, props.index, startAnimation]);
 
-  React.useEffect(() => {
-    if (props.index === props.currentlyViewable) {
-      //props.flatListRef?.scrollToIndex({
-      //index: props.currentlyViewable,
-      //animated: true,
-      //viewPosition: 0.5,
-      //});
-    }
-  }, [props.currentlyViewable, props.flatListRef, props.index]);
 
   return (
     <Animated.View
@@ -75,30 +69,40 @@ export function ListItem(props: IListItem) {
         },
       ]}
     >
-      <View style={styles.image_container}>
-        <Image style={styles.image} source={{ uri: props.image }} />
-      </View>
-
-      <View style={styles.movie_info}>
-        <Text
-          style={{ textAlign: 'center', color: '#12153D' }}
-          category="h5"
-          allowFontScaling={true}
-        >
-          {props.name}
-        </Text>
-        <View
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginTop: 8,
-          }}
-        >
-          <Icon name="star" style={STYLE.icon} fill="gold" />
-          <Text style={{ marginLeft: 4, fontSize: 18 }}>8.2</Text>
+      <TouchableOpacity
+        onPress={() => {
+          if (props.movieId) {
+            navigation.navigate('Movie', { movieId: props.movieId });
+          }
+        }}
+      >
+        <View style={styles.image_container}>
+          <Image style={styles.image} source={{ uri: props.image }} />
         </View>
-      </View>
+
+        {props.index === props.currentlyViewable && (
+          <View style={styles.movie_info}>
+            <Text
+              style={{ textAlign: 'center', color: '#12153D' }}
+              category="h5"
+              allowFontScaling={true}
+            >
+              {props.name}
+            </Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 8,
+              }}
+            >
+              <Icon name="star" style={STYLE.icon} fill="gold" />
+              <Text style={{ marginLeft: 4, fontSize: 18 }}>8.2</Text>
+            </View>
+          </View>
+        )}
+      </TouchableOpacity>
     </Animated.View>
   );
 }

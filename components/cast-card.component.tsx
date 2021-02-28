@@ -4,23 +4,26 @@ import { Text } from '@ui-kitten/components';
 
 import STYLE from '../style-constants';
 
-export function CastCard() {
+export function CastCard(props: {
+  originalName: string;
+  role: string;
+  image: string;
+}) {
   return (
-    <View style={{ padding: STYLE.gutter }}>
+    <View style={{ margin: STYLE.gutter, marginTop: 0, maxWidth: 100 }}>
       <View style={styles.card}>
         <Image
           source={{
-            uri:
-              'https://image.tmdb.org/t/p/w154/ht1aCYH4q6MB6A12Szf7IfP72Fb.jpg',
+            uri: 'https://image.tmdb.org/t/p/w154' + props.image,
           }}
           style={styles.image}
         />
       </View>
-      <Text style={styles.text}>Actor Name</Text>
+      <Text style={styles.text}>{props.originalName}</Text>
       <Text
         style={[styles.text, { color: '#9A9BB2', fontSize: 15, marginTop: 3 }]}
       >
-        Role
+        {props.role}
       </Text>
     </View>
   );

@@ -6,9 +6,12 @@ import STYLE from '../style-constants';
 import { NetworkRequest } from '../network-requests';
 import { Spinner } from '../components/spinner.component';
 
-interface IMovieCategories {}
+interface IMovieCategories {
+  setSelectedGenre: (id: number) => void;
+  selectedGenre: number;
+}
 
-export function MovieCategories(_props: IMovieCategories) {
+export function MovieCategories(props: IMovieCategories) {
   const [categories, setCategories] = React.useState<
     { id: number; name: string }[]
   >();
@@ -35,19 +38,34 @@ export function MovieCategories(_props: IMovieCategories) {
   return (
     <ScrollView horizontal style={styles.wrapper}>
       {Array.isArray(categories) &&
-        categories.map((cat) => <Category name={cat.name} key={cat.id} />)}
+        categories.map((genre) => (
+          <Category
+            onPress={() => props.setSelectedGenre(genre.id)}
+            isSelected={props.selectedGenre === genre.id}
+            name={genre.name}
+            key={genre.id}
+          />
+        ))}
     </ScrollView>
   );
 }
 
 interface ICategory {
   name: string;
+  isSelected: boolean;
+  onPress: () => void;
 }
 
 function Category(props: ICategory) {
   return (
-    <TouchableOpacity style={styles.category_item}>
-      <Text>{props.name}</Text>
+    <TouchableOpacity
+      onPress={() => props.onPress()}
+      style={[
+        styles.category_item,
+        props.isSelected && { backgroundColor: '#FE6D8E' },
+      ]}
+    >
+      <Text style={props.isSelected && { color: '#fff' }}>{props.name}</Text>
     </TouchableOpacity>
   );
 }

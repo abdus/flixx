@@ -1,16 +1,51 @@
 import React from 'react';
-import { Animated, StyleSheet, View, Easing, Dimensions } from 'react-native';
+import { Animated, StyleSheet, View, Easing } from 'react-native';
 import { Layout, Text } from '@ui-kitten/components';
+import { useFocusEffect } from '@react-navigation/native';
 
 import STYLE from '../style-constants';
 import { MovieMetaBar } from '../components/movie-meta-bar.component';
 import { CastCard } from '../components/cast-card.component';
 import { Spinner } from '../components/spinner.component';
+import { YTVideoEmbed } from '../components/youtube-video.component';
 import { NetworkRequest } from '../network-requests';
 
 export default function MovieScreen({ route }: any) {
+  const MOVIE_ID = route?.params?.movieId;
   const FadeAnime = React.useRef(new Animated.Value(0)).current;
-  const [movie, setMovie] = React.useState<any>(null);
+  const [movie, setMovie] = React.useState<any>();
+  const [castAndCrew, setCastAndCrew] = React.useState<any>();
+  const [video, setVideo] = React.useState<any>();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const immediate = setImmediate(async () => {
+        const api = new NetworkRequest();
+
+        {
+          const { data } = await api.getAmovie(MOVIE_ID);
+          data && setMovie(data);
+        }
+
+        {
+          const { data } = await api.getCredit(MOVIE_ID);
+          data && setCastAndCrew(data);
+        }
+
+        {
+          const { data } = await api.getVideos(MOVIE_ID);
+          data && setVideo((data as any).results[0]);
+        }
+      });
+
+      return () => {
+        setMovie(undefined);
+        setCastAndCrew(undefined);
+        setVideo(undefined);
+        clearImmediate(immediate);
+      };
+    }, [MOVIE_ID])
+  );
 
   React.useEffect(() => {
     Animated.timing(FadeAnime, {
@@ -19,19 +54,7 @@ export default function MovieScreen({ route }: any) {
       easing: Easing.linear,
       duration: 300,
     }).start();
-  }, [FadeAnime]);
-
-  React.useEffect(() => {
-    const immediate = setImmediate(async () => {
-      const api = new NetworkRequest();
-      const { data, error } = await api.getAmovie(550);
-
-      data && setMovie(data);
-      error;
-    });
-
-    return () => clearImmediate(immediate);
-  }, [route]);
+  });
 
   if (!movie) {
     return (
@@ -48,15 +71,15 @@ export default function MovieScreen({ route }: any) {
         <Animated.Image
           style={styles.image}
           source={{
-            uri: `https://www.themoviedb.org/t/p/w533_and_h300_bestv2/${movie?.backdrop_path}`,
+            uri: `https://www.themoviedb.org/t/p/original/${movie.backdrop_path}`,
           }}
         />
         <MovieMetaBar
-          voteAverage={movie?.vote_average}
-          voteCount={movie?.vote_count}
+          voteAverage={movie.vote_average}
+          voteCount={movie.vote_count}
         />
         <Animated.View style={[styles.section, { marginTop: 20 }]}>
-          <Text category="h4">{movie?.title || <Spinner height={20} />}</Text>
+          <Text category="h4">{movie.title || <Spinner height={20} />}</Text>
 
           <View
             style={{
@@ -72,7 +95,7 @@ export default function MovieScreen({ route }: any) {
                 fontSize: 14,
               }}
             >
-              {movie?.release_date?.split('-')[0]}
+              {movie.release_date?.split('-')[0]}
             </Text>
             <Text
               style={{
@@ -86,9 +109,10 @@ export default function MovieScreen({ route }: any) {
             <Text style={{ color: '#9A9BB2', fontSize: 14 }}>2h 13min</Text>
           </View>
 
-          {movie?.genres?.length > 0 && (
+          {movie.genres?.length > 0 && (
             <Animated.ScrollView
               horizontal
+              showsHorizontalScrollIndicator={false}
               style={{ marginTop: 20, opacity: FadeAnime }}
             >
               {movie.genres.map((item: { id: number; name: string }) => (
@@ -105,19 +129,36 @@ export default function MovieScreen({ route }: any) {
           <Text style={styles.section_text}>{movie?.overview}</Text>
         </Animated.View>
 
-        <Animated.View style={[styles.section, { opacity: FadeAnime }]}>
-          <Text category="h6">Cast & Crew</Text>
+        {video && video.site === 'YouTube' && (
+          <Animated.View style={[styles.section, { opacity: FadeAnime }]}>
+            <YTVideoEmbed youtubeKey={video.key} />
+          </Animated.View>
+        )}
+
+        <Animated.View style={[{ opacity: FadeAnime }]}>
+          <Text style={styles.section} category="h6">
+            Cast & Crew
+          </Text>
 
           <Animated.ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
           >
-            <CastCard />
-            <CastCard />
-            <CastCard />
-            <CastCard />
-            <CastCard />
-            <CastCard />
+            {castAndCrew?.cast.map((person: any) => (
+              <CastCard
+                originalName={person.name}
+                role={person.character}
+                image={person.profile_path}
+              />
+            ))}
+
+            {castAndCrew?.crew.map((person: any) => (
+              <CastCard
+                originalName={person.name}
+                role={person.job}
+                image={person.profile_path}
+              />
+            ))}
           </Animated.ScrollView>
         </Animated.View>
       </Animated.ScrollView>
