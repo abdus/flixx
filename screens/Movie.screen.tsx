@@ -1,7 +1,13 @@
 import React from 'react';
-import { Animated, StyleSheet, View, Easing } from 'react-native';
-import { Layout, Text } from '@ui-kitten/components';
-import { useFocusEffect } from '@react-navigation/native';
+import {
+  Animated,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Easing,
+} from 'react-native';
+import { Layout, Text, Icon } from '@ui-kitten/components';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import STYLE from '../style-constants';
 import { MovieMetaBar } from '../components/movie-meta-bar.component';
@@ -11,6 +17,7 @@ import { YTVideoEmbed } from '../components/youtube-video.component';
 import { NetworkRequest } from '../network-requests';
 
 export default function MovieScreen({ route }: any) {
+  const navigation = useNavigation();
   const MOVIE_ID = route?.params?.movieId;
   const FadeAnime = React.useRef(new Animated.Value(0)).current;
   const [movie, setMovie] = React.useState<any>();
@@ -67,6 +74,21 @@ export default function MovieScreen({ route }: any) {
 
   return (
     <Layout>
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          top: 20,
+          left: 20,
+          padding: 10,
+          zIndex: 1000,
+          backgroundColor: '#ffffff90',
+          borderRadius: 10,
+        }}
+        onPress={() => navigation.goBack()}
+      >
+        <Icon name="arrow-ios-back-outline" style={STYLE.icon} fill="#141414" />
+      </TouchableOpacity>
+
       <Animated.ScrollView>
         <Animated.Image
           style={styles.image}
@@ -74,10 +96,13 @@ export default function MovieScreen({ route }: any) {
             uri: `https://www.themoviedb.org/t/p/original/${movie.backdrop_path}`,
           }}
         />
+
         <MovieMetaBar
+          movieId={movie.id}
           voteAverage={movie.vote_average}
           voteCount={movie.vote_count}
         />
+
         <Animated.View style={[styles.section, { marginTop: 20 }]}>
           <Text category="h4">{movie.title || <Spinner height={20} />}</Text>
 
@@ -97,16 +122,10 @@ export default function MovieScreen({ route }: any) {
             >
               {movie.release_date?.split('-')[0]}
             </Text>
-            <Text
-              style={{
-                marginRight: 20,
-                color: '#9A9BB2',
-                fontSize: 14,
-              }}
-            >
-              PG-13
+
+            <Text style={{ color: '#9A9BB2', fontSize: 14 }}>
+              {`${Math.floor(movie.runtime / 60)}h ${movie.runtime % 60}min`}
             </Text>
-            <Text style={{ color: '#9A9BB2', fontSize: 14 }}>2h 13min</Text>
           </View>
 
           {movie.genres?.length > 0 && (
@@ -146,6 +165,7 @@ export default function MovieScreen({ route }: any) {
           >
             {castAndCrew?.cast.map((person: any) => (
               <CastCard
+                key={person.id + Math.random()}
                 originalName={person.name}
                 role={person.character}
                 image={person.profile_path}
@@ -154,6 +174,7 @@ export default function MovieScreen({ route }: any) {
 
             {castAndCrew?.crew.map((person: any) => (
               <CastCard
+                key={person.id + Math.random()}
                 originalName={person.name}
                 role={person.job}
                 image={person.profile_path}

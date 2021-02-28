@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, View, StyleSheet } from 'react-native';
+import { Animated, View, StyleSheet, Linking } from 'react-native';
 import { Icon, Text } from '@ui-kitten/components';
 
 import STYLES from '../style-constants';
@@ -8,6 +8,7 @@ import { Spinner } from './spinner.component';
 interface IProps {
   voteAverage: number;
   voteCount: number;
+  movieId: string;
 }
 
 export function MovieMetaBar(props: IProps) {
@@ -28,10 +29,14 @@ export function MovieMetaBar(props: IProps) {
             <Text style={{ fontWeight: 'bold' }}>{props.voteAverage}</Text>
             /10
           </Text>
-          <Text style={styles.small_text}>{props.voteCount}</Text>
         </View>
 
-        <View style={styles.bar_child}>
+        <View
+          style={styles.bar_child}
+          onTouchEnd={() =>
+            Linking.openURL('https://www.themoviedb.org/movie/' + props.movieId)
+          }
+        >
           <Icon name="star-outline" style={STYLES.icon} fill="gray" />
           <Text style={styles.text}>Rate This</Text>
         </View>
@@ -46,7 +51,6 @@ export function MovieMetaBar(props: IProps) {
 }
 
 function GreenTextBG(props: { rating: number }) {
-  console.log(props.rating);
   return (
     <View
       style={[
