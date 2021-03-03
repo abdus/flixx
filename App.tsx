@@ -5,7 +5,7 @@ import * as eva from '@eva-design/eva';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { NavigationContainer } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
 
 // screens
 import HomeScreen from './screens/Home.screen';
@@ -13,7 +13,7 @@ import MovieScreen from './screens/Movie.screen';
 import SideMenu from './screens/SideMenu';
 
 // constants
-const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
 
 const App = () => {
   return (
@@ -22,13 +22,13 @@ const App = () => {
         <IconRegistry icons={EvaIconsPack} />
         <StatusBar animated={true} hidden={true} />
         <NavigationContainer>
-          <Drawer.Navigator initialRouteName="Home">
-            <Drawer.Screen name="Home" children={(_props) => <HomeScreen />} />
-            <Drawer.Screen
+          <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen name="Home" children={(_props) => <HomeScreen />} />
+            <Stack.Screen
               name="Movie"
               children={(props) => <MovieScreen {...props} />}
             />
-          </Drawer.Navigator>
+          </Stack.Navigator>
         </NavigationContainer>
       </ApplicationProvider>
     </>

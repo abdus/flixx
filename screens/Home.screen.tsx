@@ -46,12 +46,13 @@ function HomeScreen() {
         {movies ? <MovieSlider movies={movies} /> : <Spinner height={400} />}
 
         {/* search bar */}
+        {/*
         <View
           style={styles.search_box}
           onLayout={(e) => setSearchBoxPos(e.nativeEvent.layout.y)}
         >
           <Input placeholder="search something" style={{ borderRadius: 10 }} />
-        </View>
+          </View>*/}
       </Layout>
     </ScrollView>
   );

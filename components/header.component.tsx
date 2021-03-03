@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Animated, TouchableOpacity } from 'react-native';
 import { Layout, Icon } from '@ui-kitten/components';
-import { useNavigation } from '@react-navigation/native';
 
 import STYLE from '../style-constants';
 
@@ -23,14 +22,9 @@ export default function Header(props: { scrollToSearchBox: () => void }) {
 }
 
 function Hamburger() {
-  const navigation = useNavigation();
-
   return (
     <>
-      <TouchableOpacity
-        style={styles.bar_wrapper}
-        onPress={() => navigation.toggleDrawer()}
-      >
+      <TouchableOpacity style={styles.bar_wrapper}>
         <Animated.View style={[styles.bars]} />
         <Animated.View style={[styles.bars, { maxWidth: '70%' }]} />
         <Animated.View style={[styles.bars, { marginBottom: 0 }]} />
