@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList } from 'react-native';
-import { ListItem } from './list-item.component';
+import { ListItem } from './slider-item.component';
 import {
   FlingGestureHandler,
   Directions as RNGHDirections,

@@ -10,7 +10,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 // screens
 import HomeScreen from './screens/Home.screen';
 import MovieScreen from './screens/Movie.screen';
-import SideMenu from './screens/SideMenu';
 
 // constants
 const Stack = createStackNavigator();
@@ -22,7 +21,7 @@ const App = () => {
         <IconRegistry icons={EvaIconsPack} />
         <StatusBar animated={true} hidden={true} />
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Home">
+          <Stack.Navigator headerMode="none" initialRouteName="Home">
             <Stack.Screen name="Home" children={(_props) => <HomeScreen />} />
             <Stack.Screen
               name="Movie"

@@ -33,12 +33,18 @@ export class NetworkRequest {
     }
   }
 
-  async discoverMovies(queryParams?: {
-    genres: string;
-  }): Promise<ApiReturnType> {
+  async discoverMovies(
+    apiPath: 'movie' | 'tv',
+    queryParams?: {
+      genres?: string;
+      sort_by?: string;
+    }
+  ): Promise<ApiReturnType> {
     try {
       const resp = await fetch(
-        `${this.baseUri}/discover/movie?api_key=${this.apiKey}&with_genres=${queryParams?.genres}`,
+        `${this.baseUri}/discover/${apiPath}?api_key=${this.apiKey}${
+          queryParams?.genres ? `&with_genres=${queryParams?.genres}` : ''
+        }${queryParams?.sort_by ? `&sort_by=${queryParams.sort_by}` : ''}`,
         {
           headers: this.headers,
           method: 'GET',
@@ -86,11 +92,27 @@ export class NetworkRequest {
     }
   }
 
-
   async getVideos(id: number): Promise<ApiReturnType> {
     try {
       const resp = await fetch(
         `${this.baseUri}/movie/${id}/videos?api_key=${this.apiKey}`,
+        {
+          headers: this.headers,
+          method: 'GET',
+        }
+      );
+
+      return await handleRawResp(resp);
+    } catch (err) {
+      console.log(err);
+      return { error: err };
+    }
+  }
+
+  async searchMovies(query: string): Promise<ApiReturnType> {
+    try {
+      const resp = await fetch(
+        `${this.baseUri}/search/movie?api_key=${this.apiKey}&query=${query}`,
         {
           headers: this.headers,
           method: 'GET',

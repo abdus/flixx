@@ -75,15 +75,7 @@ export default function MovieScreen({ route }: any) {
   return (
     <Layout>
       <TouchableOpacity
-        style={{
-          position: 'absolute',
-          top: 20,
-          left: 20,
-          padding: 10,
-          zIndex: 1000,
-          backgroundColor: '#ffffff90',
-          borderRadius: 10,
-        }}
+        style={styles.back_button}
         onPress={() => navigation.goBack()}
       >
         <Icon name="arrow-ios-back-outline" style={STYLE.icon} fill="#141414" />
@@ -216,5 +208,15 @@ const styles = StyleSheet.create({
     borderColor: 'lightgray',
     borderStyle: 'solid',
     borderRadius: 100,
+  },
+
+  back_button: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    padding: 10,
+    zIndex: 1000,
+    backgroundColor: '#ffffff90',
+    borderRadius: 10,
   },
 });
