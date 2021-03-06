@@ -20,3 +20,12 @@ export const debounce = (() => {
     return debounceTimer;
   };
 })();
+
+export function shuffleArray(arr: any[]): any[] {
+  for (let i = 0; i < arr.length; i++) {
+    const rand = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[rand]] = [arr[rand], arr[i]];
+  }
+
+  return arr;
+}
