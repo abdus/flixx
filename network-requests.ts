@@ -125,6 +125,40 @@ export class NetworkRequest {
       return { error: err };
     }
   }
+
+  async getPersonInfo(person_id: string): Promise<ApiReturnType> {
+    try {
+      const resp = await fetch(
+        `${this.baseUri}/person/${person_id}?api_key=${this.apiKey}`,
+        {
+          headers: this.headers,
+          method: 'GET',
+        }
+      );
+
+      return await handleRawResp(resp);
+    } catch (err) {
+      console.log(err);
+      return { error: err };
+    }
+  }
+
+  async getPersonsMovieCredit(person_id: string): Promise<ApiReturnType> {
+    try {
+      const resp = await fetch(
+        `${this.baseUri}/person/${person_id}/movie_credits?api_key=${this.apiKey}`,
+        {
+          headers: this.headers,
+          method: 'GET',
+        }
+      );
+
+      return await handleRawResp(resp);
+    } catch (err) {
+      console.log(err);
+      return { error: err };
+    }
+  }
 }
 
 async function handleRawResp(resp: any): Promise<ApiReturnType> {

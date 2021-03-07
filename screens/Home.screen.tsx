@@ -9,7 +9,7 @@ import { NetworkRequest } from '../network-requests';
 import { Spinner } from '../components/spinner.component';
 import { MovieCategories } from '../components/movie-categories.component';
 import { MovieSlider } from '../components/movie-slider.component';
-import { MovieGrid } from '../components/movie-grid.component';
+import { MovieGrid } from '../components/grid.component';
 
 // util
 import { debounce } from '../utils';
@@ -22,7 +22,6 @@ function HomeScreen() {
   const [searchResult, setSearchResult] = React.useState<any[]>([]);
   const [topRatedMovies, setTopRatedMovies] = React.useState<any[]>([]);
   const [popularMovies, setPopularMovies] = React.useState<any[]>([]);
-  const [popularTvShows, setPopularTvShows] = React.useState<any[]>([]);
 
   // refs
   const inputRef = React.useRef<ScrollView>(null);
@@ -69,6 +68,7 @@ function HomeScreen() {
     };
   }, [searchQuery]);
 
+  // get movie data
   React.useEffect(() => {
     const api = new NetworkRequest();
 
@@ -86,13 +86,6 @@ function HomeScreen() {
         });
         (data as any)?.results && setPopularMovies((data as any).results);
       }
-
-      {
-        const { data } = await api.discoverMovies('tv', {
-          sort_by: 'popularity.desc',
-        });
-        (data as any)?.results && setPopularTvShows((data as any).results);
-      }
     })();
   }, []);
 
@@ -102,7 +95,7 @@ function HomeScreen() {
       <Layout>
         <Header
           scrollToSearchBox={() =>
-            inputRef.current?.scrollTo({ y: searchBoxPos })
+            inputRef.current?.scrollTo(searchBoxPos && { y: searchBoxPos - 5 })
           }
         />
         <MovieCategories
@@ -113,7 +106,6 @@ function HomeScreen() {
         {movies ? <MovieSlider movies={movies} /> : <Spinner height={400} />}
 
         {/* search bar */}
-
         <View
           style={styles.search_box}
           onLayout={(e) => setSearchBoxPos(e.nativeEvent.layout.y)}
@@ -129,7 +121,6 @@ function HomeScreen() {
           <MovieGrid moviesArr={searchResult} />
           <MovieGrid moviesArr={topRatedMovies} />
           <MovieGrid moviesArr={popularMovies} />
-          {/*<MovieGrid moviesArr={popularTvShows} />*/}
         </View>
       </Layout>
     </ScrollView>

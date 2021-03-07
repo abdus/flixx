@@ -9,7 +9,7 @@ import STYLES from '../style-constants';
 interface IProps {
   movieId: number;
   imagePath: string;
-  title: string;
+  title?: string;
   tagline: string;
 }
 
@@ -22,26 +22,15 @@ export function GridItem(props: IProps) {
   const imageUrlRef = React.useRef(`${IMAGE_BASE}${props.imagePath}`);
   const fadeInAnim = React.useRef(new Animated.Value(0)).current;
 
+  // set width and height of the image accoring to screen size
   React.useEffect(() => {
-    Image.getSize(
-      imageUrlRef.current,
-      (w, h) => {
-        const ratio = h / w;
-        const width = (windowWidthRef.current - 4 * paddingRef.current) / 2;
-        const height = width * ratio;
-        setImgDimension([width, height]);
-      },
-      (err) => {
-        //const ratio = 900 / 600;
-        //const width = (windowWidthRef.current - 4 * paddingRef.current) / 2;
-        //const height = width * ratio;
-        //setImgDimension([width, height]);
-        //imageUrlRef.current = 'https://i.ibb.co/9Yk66Gc/default-backgrop.png';
-        console.log(err);
-      }
-    );
+    const ratio = 900 / 600; // height / width
+    const width = (windowWidthRef.current - 4 * paddingRef.current) / 2;
+    const height = width * ratio;
+    setImgDimension([width, height]);
   }, [props.imagePath]);
 
+  // animation
   React.useEffect(() => {
     Animated.timing(fadeInAnim, {
       useNativeDriver: true,
@@ -68,16 +57,13 @@ export function GridItem(props: IProps) {
             style={styles.image}
             width={imgDimension?.[0]}
             height={imgDimension?.[1]}
-            source={{
-              uri: imageUrlRef.current,
-            }}
+            source={{ uri: imageUrlRef.current }}
           />
-          {imgDimension && (
+          {imgDimension && props.title && (
             <View>
               <Text category="h6" style={styles.text_label}>
                 {props.title}
               </Text>
-              <Text>{props.tagline}</Text>
             </View>
           )}
         </TouchableOpacity>

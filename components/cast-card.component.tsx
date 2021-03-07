@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from '@ui-kitten/components';
+import { useNavigation } from '@react-navigation/native';
 
 import STYLE from '../style-constants';
 
@@ -8,9 +9,17 @@ export function CastCard(props: {
   originalName: string;
   role: string;
   image: string;
+  id: number;
 }) {
+  const navigation = useNavigation();
+
   return (
-    <View style={{ margin: STYLE.gutter, marginTop: 0, maxWidth: 100 }}>
+    <TouchableOpacity
+      style={{ margin: STYLE.gutter, marginTop: 0, maxWidth: 100 }}
+      onPress={() => {
+        navigation.navigate('Person', { personId: props.id });
+      }}
+    >
       <View style={styles.card}>
         <Image
           source={{
@@ -25,7 +34,7 @@ export function CastCard(props: {
       >
         {props.role}
       </Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 

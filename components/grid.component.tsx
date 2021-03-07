@@ -7,6 +7,7 @@ import STYLES from '../style-constants';
 
 export function MovieGrid(props: { moviesArr: any[]; title?: string }) {
   const numColumnsRef = React.useRef(2);
+  const filteredMoviesArr = props.moviesArr?.filter((m) => m.backdrop_path);
 
   return (
     <>
@@ -18,7 +19,8 @@ export function MovieGrid(props: { moviesArr: any[]; title?: string }) {
 
       <View style={styles.wrapper}>
         <FlatList
-          data={props.moviesArr}
+          contentContainerStyle={{ alignItems: 'baseline' }}
+          data={filteredMoviesArr}
           showsVerticalScrollIndicator={false}
           numColumns={numColumnsRef.current}
           renderItem={({ item }) => (

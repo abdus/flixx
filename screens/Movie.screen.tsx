@@ -1,23 +1,17 @@
 import React from 'react';
-import {
-  Animated,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Easing,
-} from 'react-native';
-import { Layout, Text, Icon } from '@ui-kitten/components';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { Animated, StyleSheet, View, Easing } from 'react-native';
+import { Layout, Text } from '@ui-kitten/components';
+import { useFocusEffect } from '@react-navigation/native';
 
 import STYLE from '../style-constants';
 import { MovieMetaBar } from '../components/movie-meta-bar.component';
 import { CastCard } from '../components/cast-card.component';
 import { Spinner } from '../components/spinner.component';
 import { YTVideoEmbed } from '../components/youtube-video.component';
+import { BackButton } from '../components/back-button.component';
 import { NetworkRequest } from '../network-requests';
 
 export default function MovieScreen({ route }: any) {
-  const navigation = useNavigation();
   const MOVIE_ID = route?.params?.movieId;
   const FadeAnime = React.useRef(new Animated.Value(0)).current;
   const [movie, setMovie] = React.useState<any>();
@@ -74,13 +68,7 @@ export default function MovieScreen({ route }: any) {
 
   return (
     <Layout>
-      <TouchableOpacity
-        style={styles.back_button}
-        onPress={() => navigation.goBack()}
-      >
-        <Icon name="arrow-ios-back-outline" style={STYLE.icon} fill="#141414" />
-      </TouchableOpacity>
-
+      <BackButton style={styles.back_button} />
       <Animated.ScrollView>
         <Animated.Image
           style={styles.image}
@@ -161,6 +149,7 @@ export default function MovieScreen({ route }: any) {
                 originalName={person.name}
                 role={person.character}
                 image={person.profile_path}
+                id={person.id}
               />
             ))}
 
@@ -170,6 +159,7 @@ export default function MovieScreen({ route }: any) {
                 originalName={person.name}
                 role={person.job}
                 image={person.profile_path}
+                id={person.id}
               />
             ))}
           </Animated.ScrollView>

@@ -10,6 +10,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 // screens
 import HomeScreen from './screens/Home.screen';
 import MovieScreen from './screens/Movie.screen';
+import PersonScreen from './screens/Person.screen';
 
 // constants
 const Stack = createStackNavigator();
@@ -26,6 +27,10 @@ const App = () => {
             <Stack.Screen
               name="Movie"
               children={(props) => <MovieScreen {...props} />}
+            />
+            <Stack.Screen
+              name="Person"
+              children={(props) => <PersonScreen {...props} />}
             />
           </Stack.Navigator>
         </NavigationContainer>
