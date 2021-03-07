@@ -7,29 +7,23 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +143 screens/Person.screen.tsx
-badd +49 components/grid-item.component.tsx
-badd +1 network-requests.ts
-badd +22 ~/Dev/personal/Flixx/components/grid.component.tsx
+badd +27 components/movie-slider.component.tsx
+badd +57 components/grid-item.component.tsx
 argglobal
 %argdel
-edit screens/Person.screen.tsx
+edit components/movie-slider.component.tsx
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
-wincmd _ | wincmd |
-vsplit
-2wincmd h
-wincmd w
+1wincmd h
 wincmd w
 wincmd t
 set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 79 + 119) / 239)
-exe 'vert 2resize ' . ((&columns * 79 + 119) / 239)
-exe 'vert 3resize ' . ((&columns * 79 + 119) / 239)
+exe 'vert 1resize ' . ((&columns * 119 + 119) / 239)
+exe 'vert 2resize ' . ((&columns * 119 + 119) / 239)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -40,30 +34,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 143 - ((6 * winheight(0) + 24) / 49)
+let s:l = 27 - ((9 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-143
-normal! 010|
-wincmd w
-argglobal
-if bufexists("~/Dev/personal/Flixx/components/grid.component.tsx") | buffer ~/Dev/personal/Flixx/components/grid.component.tsx | else | edit ~/Dev/personal/Flixx/components/grid.component.tsx | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 21 - ((20 * winheight(0) + 24) / 49)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-21
-normal! 017|
+27
+normal! 03|
 wincmd w
 argglobal
 if bufexists("components/grid-item.component.tsx") | buffer components/grid-item.component.tsx | else | edit components/grid-item.component.tsx | endif
@@ -76,40 +52,17 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 88 - ((43 * winheight(0) + 24) / 49)
+let s:l = 67 - ((29 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-88
-normal! 030|
+67
+normal! 012|
 wincmd w
-exe 'vert 1resize ' . ((&columns * 79 + 119) / 239)
-exe 'vert 2resize ' . ((&columns * 79 + 119) / 239)
-exe 'vert 3resize ' . ((&columns * 79 + 119) / 239)
-tabedit network-requests.ts
-set splitbelow splitright
-wincmd t
-set winminheight=0
-set winheight=1
-set winminwidth=0
-set winwidth=1
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let s:l = 150 - ((24 * winheight(0) + 24) / 49)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-150
-normal! 09|
-tabnext 2
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 119 + 119) / 239)
+exe 'vert 2resize ' . ((&columns * 119 + 119) / 239)
+tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif

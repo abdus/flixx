@@ -54,7 +54,13 @@ export function GridItem(props: IProps) {
           }
         >
           <Image
-            style={styles.image}
+            style={[
+              styles.image,
+              imgDimension && {
+                width: imgDimension[0],
+                height: imgDimension[1],
+              },
+            ]}
             width={imgDimension?.[0]}
             height={imgDimension?.[1]}
             source={{ uri: imageUrlRef.current }}
