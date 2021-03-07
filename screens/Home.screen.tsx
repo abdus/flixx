@@ -10,6 +10,7 @@ import { Spinner } from '../components/spinner.component';
 import { MovieCategories } from '../components/movie-categories.component';
 import { MovieSlider } from '../components/movie-slider.component';
 import { MovieGrid } from '../components/grid.component';
+import { Footer } from '../components/footer.component';
 
 // util
 import { debounce } from '../utils';
@@ -22,6 +23,7 @@ function HomeScreen() {
   const [searchResult, setSearchResult] = React.useState<any[]>([]);
   const [topRatedMovies, setTopRatedMovies] = React.useState<any[]>([]);
   const [popularMovies, setPopularMovies] = React.useState<any[]>([]);
+  const [indianMovies, setIndianMovies] = React.useState<any[]>([]);
 
   // refs
   const inputRef = React.useRef<ScrollView>(null);
@@ -86,6 +88,14 @@ function HomeScreen() {
         });
         (data as any)?.results && setPopularMovies((data as any).results);
       }
+
+      {
+        const { data } = await api.discoverMovies('movie', {
+          region: 'IN',
+        });
+        console.log(data);
+        (data as any)?.results && setIndianMovies((data as any).results);
+      }
     })();
   }, []);
 
@@ -121,7 +131,9 @@ function HomeScreen() {
           <MovieGrid moviesArr={searchResult} />
           <MovieGrid moviesArr={topRatedMovies} />
           <MovieGrid moviesArr={popularMovies} />
+          <MovieGrid moviesArr={indianMovies} />
         </View>
+        <Footer />
       </Layout>
     </ScrollView>
   );

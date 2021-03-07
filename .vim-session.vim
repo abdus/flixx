@@ -7,23 +7,28 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +27 components/movie-slider.component.tsx
-badd +57 components/grid-item.component.tsx
+badd +13 screens/Movie.screen.tsx
+badd +25 components/footer.component.tsx
+badd +0 screens/Person.screen.tsx
 argglobal
 %argdel
-edit components/movie-slider.component.tsx
+edit screens/Movie.screen.tsx
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
-1wincmd h
+wincmd _ | wincmd |
+vsplit
+2wincmd h
+wincmd w
 wincmd w
 wincmd t
 set winminheight=0
 set winheight=1
 set winminwidth=0
 set winwidth=1
-exe 'vert 1resize ' . ((&columns * 119 + 119) / 239)
-exe 'vert 2resize ' . ((&columns * 119 + 119) / 239)
+exe 'vert 1resize ' . ((&columns * 79 + 119) / 239)
+exe 'vert 2resize ' . ((&columns * 79 + 119) / 239)
+exe 'vert 3resize ' . ((&columns * 79 + 119) / 239)
 argglobal
 setlocal fdm=manual
 setlocal fde=0
@@ -34,15 +39,15 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 27 - ((9 * winheight(0) + 24) / 49)
+let s:l = 13 - ((12 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-27
-normal! 03|
+13
+normal! 0
 wincmd w
 argglobal
-if bufexists("components/grid-item.component.tsx") | buffer components/grid-item.component.tsx | else | edit components/grid-item.component.tsx | endif
+if bufexists("screens/Person.screen.tsx") | buffer screens/Person.screen.tsx | else | edit screens/Person.screen.tsx | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -52,16 +57,35 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 67 - ((29 * winheight(0) + 24) / 49)
+let s:l = 156 - ((3 * winheight(0) + 24) / 49)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-67
-normal! 012|
+156
+normal! 018|
+wincmd w
+argglobal
+if bufexists("components/footer.component.tsx") | buffer components/footer.component.tsx | else | edit components/footer.component.tsx | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 1 - ((0 * winheight(0) + 24) / 49)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+1
+normal! 0
 wincmd w
 2wincmd w
-exe 'vert 1resize ' . ((&columns * 119 + 119) / 239)
-exe 'vert 2resize ' . ((&columns * 119 + 119) / 239)
+exe 'vert 1resize ' . ((&columns * 79 + 119) / 239)
+exe 'vert 2resize ' . ((&columns * 79 + 119) / 239)
+exe 'vert 3resize ' . ((&columns * 79 + 119) / 239)
 tabnext 1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

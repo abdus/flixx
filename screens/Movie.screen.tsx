@@ -9,6 +9,8 @@ import { CastCard } from '../components/cast-card.component';
 import { Spinner } from '../components/spinner.component';
 import { YTVideoEmbed } from '../components/youtube-video.component';
 import { BackButton } from '../components/back-button.component';
+import { MovieSlider } from '../components/movie-slider.component';
+import { Footer } from '../components/footer.component';
 import { NetworkRequest } from '../network-requests';
 
 export default function MovieScreen({ route }: any) {
@@ -17,6 +19,7 @@ export default function MovieScreen({ route }: any) {
   const [movie, setMovie] = React.useState<any>();
   const [castAndCrew, setCastAndCrew] = React.useState<any>();
   const [video, setVideo] = React.useState<any>();
+  const [similarMovies, setSimilarMovies] = React.useState<any>();
 
   useFocusEffect(
     React.useCallback(() => {
@@ -36,6 +39,11 @@ export default function MovieScreen({ route }: any) {
         {
           const { data } = await api.getVideos(MOVIE_ID);
           data && setVideo((data as any).results[0]);
+        }
+
+        {
+          const { data } = await api.getSimilarMovies(MOVIE_ID);
+          data && setSimilarMovies((data as any).results);
         }
       });
 
@@ -135,9 +143,11 @@ export default function MovieScreen({ route }: any) {
         )}
 
         <Animated.View style={[{ opacity: FadeAnime }]}>
-          <Text style={styles.section} category="h6">
-            Cast & Crew
-          </Text>
+          {castAndCrew && (
+            <Text style={styles.section} category="h6">
+              Cast & Crew
+            </Text>
+          )}
 
           <Animated.ScrollView
             horizontal
@@ -163,7 +173,19 @@ export default function MovieScreen({ route }: any) {
               />
             ))}
           </Animated.ScrollView>
+
+          {similarMovies && Array.isArray(similarMovies) ? (
+            <>
+              <Animated.View style={[styles.section, { opacity: FadeAnime }]}>
+                <Text category="h6">Similar Movies</Text>
+                <MovieSlider movies={similarMovies} />
+              </Animated.View>
+            </>
+          ) : (
+            <Spinner height={100} />
+          )}
         </Animated.View>
+        <Footer />
       </Animated.ScrollView>
     </Layout>
   );

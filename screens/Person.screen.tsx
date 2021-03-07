@@ -7,6 +7,7 @@ import STYLE from '../style-constants';
 import { Spinner } from '../components/spinner.component';
 import { BackButton } from '../components/back-button.component';
 import { MovieGrid } from '../components/grid.component';
+import { Footer } from '../components/footer.component';
 import { NetworkRequest } from '../network-requests';
 
 import { beautifyDate } from '../utils';
@@ -152,6 +153,7 @@ export default function MovieScreen({ route }: any) {
         <View>
           <MovieGrid moviesArr={personMovie} />
         </View>
+        <Footer />
       </Animated.ScrollView>
     </Layout>
   );

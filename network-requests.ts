@@ -38,13 +38,16 @@ export class NetworkRequest {
     queryParams?: {
       genres?: string;
       sort_by?: string;
+      region?: string;
     }
   ): Promise<ApiReturnType> {
     try {
       const resp = await fetch(
         `${this.baseUri}/discover/${apiPath}?api_key=${this.apiKey}${
           queryParams?.genres ? `&with_genres=${queryParams?.genres}` : ''
-        }${queryParams?.sort_by ? `&sort_by=${queryParams.sort_by}` : ''}`,
+        }${queryParams?.sort_by ? `&sort_by=${queryParams.sort_by}` : ''}${
+          queryParams?.region ? `&region=${queryParams.region}` : ''
+        }`,
         {
           headers: this.headers,
           method: 'GET',
@@ -96,6 +99,23 @@ export class NetworkRequest {
     try {
       const resp = await fetch(
         `${this.baseUri}/movie/${id}/videos?api_key=${this.apiKey}`,
+        {
+          headers: this.headers,
+          method: 'GET',
+        }
+      );
+
+      return await handleRawResp(resp);
+    } catch (err) {
+      console.log(err);
+      return { error: err };
+    }
+  }
+
+  async getSimilarMovies(id: number): Promise<ApiReturnType> {
+    try {
+      const resp = await fetch(
+        `${this.baseUri}/movie/${id}/similar?api_key=${this.apiKey}`,
         {
           headers: this.headers,
           method: 'GET',

@@ -1,10 +1,6 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 import { ListItem } from './slider-item.component';
-import {
-  FlingGestureHandler,
-  Directions as RNGHDirections,
-} from 'react-native-gesture-handler';
 
 export function MovieSlider(props: { movies: any }) {
   const flatListRef = React.useRef<any>(null);
@@ -25,28 +21,26 @@ export function MovieSlider(props: { movies: any }) {
   }, [currentlyViewable]);
 
   return (
-    <FlingGestureHandler direction={RNGHDirections.LEFT | RNGHDirections.RIGHT}>
-      <FlatList
-        onMomentumScrollEnd={() => {
-          flatListRef.current.scrollToIndex({
-            index: currentlyViewable,
-            viewPosition: 0.5,
-          });
-        }}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        data={props.movies}
-        renderItem={(props) => {
-          return renderItem(props, currentlyViewable);
-        }}
-        keyExtractor={(item) => item?.id?.toString()}
-        onViewableItemsChanged={onViewableItemsChanged.current}
-        viewabilityConfig={viewabilityConfig.current}
-        ref={(list) => {
-          flatListRef.current = list;
-        }}
-      />
-    </FlingGestureHandler>
+    <FlatList
+      onMomentumScrollEnd={() => {
+        flatListRef.current.scrollToIndex({
+          index: currentlyViewable,
+          viewPosition: 0.5,
+        });
+      }}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      data={props.movies}
+      renderItem={(props) => {
+        return renderItem(props, currentlyViewable);
+      }}
+      keyExtractor={(item) => item?.id?.toString()}
+      onViewableItemsChanged={onViewableItemsChanged.current}
+      viewabilityConfig={viewabilityConfig.current}
+      ref={(list) => {
+        flatListRef.current = list;
+      }}
+    />
   );
 }
 
